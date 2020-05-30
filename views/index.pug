@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1#topHeading Welcome to #{title}
+  div
+    span#room_Name Current Room::[Open World](Default)::
+    span#active_users Active users 
+      span [0]
+    span#total_users Total users
+      span [1]
+  div#messagePanel
+
+  input(type="text",placeholder="Write message here..." id="input_msg")
+  button(id="btn") Send
+  div#foot_
+    span.cmd Commands-
+    span a) create or Join room "/room room_name"
+    span b) create  name "/name  your_name"
+    
+
+  include modules/scripts

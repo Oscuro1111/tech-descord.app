@@ -1,0 +1,139 @@
+body {
+  background-image: url("../img/img2.jpg");
+  opacity: 1;
+  min-height: 10vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: blueviolet;
+}
+
+#input_msg {
+  width: 60vw;
+  height: 30px;
+  font-size: 1.4vw;
+  font-family: fantasy;
+}
+
+.msg-text-client {
+  word-wrap: break-word;
+  background-color: rgb(2, 2, 2);
+  color: white;
+  font-family: cursive;
+  font-weight: 200;
+  padding: 0.7rem;
+  max-width: 10vw;
+  margin: 1rem 1rem 1rem 0;
+  border-radius: 15%;
+}
+#messagePanel {
+  border-color: teal;
+  background-repeat: no-repeat;
+  min-height: 70vh;
+  opacity: 0.8;
+  max-height: 70vh;
+  width: 60vw;
+  scroll-behavior: smooth;
+  overflow: scroll;
+
+  background-color: rgb(91, 32, 119);
+  padding: 0.6rem;
+}
+
+.topHeading {
+  font-size: 1.7vw;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+}
+
+a#foc {
+  visibility: hidden;
+}
+
+#btn {
+  width: 60vw;
+  padding: 0.2rem;
+  font-family: cursive;
+  font-weight: 600;
+  font-size: x-large;
+  background-color: rgb(29, 165, 113);
+  color: rgb(255, 255, 255);
+}
+
+
+div#foot_ {
+    display: flex;
+    flex-direction: column;
+    font-family: monospace;
+    color: white;
+    padding:2vw;
+    width:60vw;
+    font-size:1rem;
+    background-color: rgb(39, 90, 158);
+}
+#active_users {
+  background-color: rgb(9, 129, 25);
+  font-family: cursive;
+  font-weight: 50;
+  color:#fff;
+  padding: 1px;
+}
+
+
+#room_Name{
+    color: #fff;
+    font-family: cursive;
+    font-weight: 50;
+    margin-left: 2px;
+    padding: 1px;
+    background-color: rgb(0, 0, 0);
+    
+}
+#total_users {
+  color: #fff;
+  font-family: cursive;
+  font-weight: 50;
+  margin-left: 2px;
+  padding: 1px;
+  background-color: rgb(6, 9, 170);
+}
+
+@media only screen and (max-width: 500px) {
+  
+  #active_users,#total_users,#room_Name{
+      position: -webkit-sticky;
+      font-size: 0.8rem;
+
+      display: flex;
+  }
+    #btn {
+    font-size: 5.7vw;
+    width: 100vw;
+    font-weight: 100;
+  }
+
+
+
+
+  #input_msg {
+    width: 90vw;
+    font-size: 5.1vw;
+  }
+  #messagePanel {
+    width: 100vw;
+    font-size: 5vw;
+  }
+  #topHeading {
+    font-size: 6.5vw;
+    color: #fff;
+  }
+  div#foot_ {
+    width: 90vw;
+    font-size: 0.7rem;
+  }
+
+  .msg-text-client {
+    max-width: 35vw;
+  }
+}
