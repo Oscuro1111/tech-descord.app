@@ -16,6 +16,9 @@ const Main = function (scok) {
     configurable: false,
     value: [],
   });
+
+  this.clientName=null;
+  this.flg=false;
 };
 
 Main.prototype = new Object();
@@ -26,17 +29,96 @@ Main.prototype.getSocket = function () {
   return this.socket;
 };
 
+Main.prototype.handleClient = function (msgPanel, activeNum) {
+  //Handle client code
+
+  
+  const sock = this.getSocket();
+
+  sock.on('_msg_',msg_=>{
+
+if(this.flg){
+  this.flg=false;
+  return;
+}
+
+    console.log("DATA RECIEVD");
+    var msg = document.createElement("div");
+
+
+    
+    msg.setAttribute("id", "msg-text-other");
+    
+    msg.append(
+      document.createTextNode(msg_.data)
+        );
+        
+        msgPanel.append(msg);
+        
+        msgPanel.scrollTo(0, msgPanel.scrollHeight);
+
+  });
+
+
+  
+  sock.on("onlineClients",data=>{
+    
+    activeNum.innerText="Active usres"+"["+data.online+"]"+" ";
+  });
+  
+  sock.on("nameResult", (data) => {
+    
+    var msg = document.createElement("div");
+
+    this.clientName = data.userName;
+    
+    msg.setAttribute("class", "msg-text-client");
+    
+    msg.append(
+      document.createTextNode(
+        data.success ? "your USER NAME name is : "+data.userName : "Unable to create Name for you?"
+        )
+        );
+        
+        msgPanel.append(msg);
+        
+        msgPanel.scrollTo(0, msgPanel.scrollHeight);
+      });
+      
+
+      
+      sock.on("_sys_brodcast",data=>{
+        
+        var msg = document.createElement("div");
+        
+        msg.setAttribute("class", "msg-text-client");
+        
+        msg.append(
+          document.createTextNode(data.msg)
+    );
+    
+    msgPanel.append(msg);
+    
+    msgPanel.scrollTo(0, msgPanel.scrollHeight);
+    
+  });
+};
+
 Main.prototype.install = function () {
   const msgPanel = document.getElementById("messagePanel");
   const input_box = document.getElementById("input_msg");
   const btn = document.getElementById("btn");
 
-  const Msgs = [];
+  const activeNum =  document.getElementById("active_users");
+  
 
+  console.log("CHECKING:",activeNum);
+  const Msgs = [];
+  
   msgPanel.addEventListener("scroll", () => {
     if (Msgs.length > 0) msgPanel.prepend(Msgs.pop());
   });
-
+  
   btn.addEventListener("click", (e) => {
     setTimeout((_) => {
       if (/^\//g.test(input_box.value)) {
@@ -50,18 +132,21 @@ Main.prototype.install = function () {
 
         msg.setAttribute("class", "msg-text-client");
 
-        msg.append(document.createTextNode(input_box.value));
+        msg.append(document.createTextNode(`<Me:${this.clientName}>`+input_box.value));
 
         let prom = new Promise((resolve, reject) => {
           try {
             //code
+            this.flg=true;
+            this.getSocket().emit('message',{data:this.clientName+":"+input_box.value});
 
-            resolve(msg);
+
+           resolve(msg);
           } catch (error) {
             reject(error);
           }
 
-          resolve(msg);
+
         })
           .then((msg_) => {
             msgPanel.append(msg_);
@@ -82,9 +167,10 @@ Main.prototype.install = function () {
       }
     }, 100);
   });
+  this.handleClient(msgPanel,activeNum);
 };
 
 function Start_() {
-  const main = new Main(io());
+  const main = new Main(io("/chat_server"));
   main.install();
 }

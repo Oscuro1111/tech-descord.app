@@ -9,6 +9,19 @@ body {
   background-color: blueviolet;
 }
 
+
+ #msg-text-other{
+  word-wrap: break-word;
+  background-color: rgb(7, 35, 88);
+  color: white;
+  font-family: cursive;
+  font-weight: 200;
+  padding: 0.7rem;
+  max-width: 10vw;
+  margin: 1rem 1rem 1rem 0;
+  border-radius: 15%;
+}
+
 #input_msg {
   width: 60vw;
   height: 30px;
