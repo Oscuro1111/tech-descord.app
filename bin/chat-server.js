@@ -36,12 +36,16 @@ module.exports = () => {
         online: num,
       });
 
-      chat_server.on("disconnect", (sock) => {
+      socket.on("disconnect", () => {
         state.activeUsers--;
         var num = state.activeUsers;
 
         chat_server.emit("onlineClients", {
           online: num,
+        });
+
+        chat_server.emit("_sys_brodcast",{
+          msg:"system>>"+state.users[socket.id][socket.id]+" Left the room",
         });
       });
 
