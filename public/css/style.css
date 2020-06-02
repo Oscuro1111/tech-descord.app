@@ -36,7 +36,7 @@ body {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: 600;
   padding: 0.7rem;
-  max-width: 10vw;
+  max-width: 50vw;
   margin: 1rem 1rem 1rem 0;
   border-radius: 15%;
 }
@@ -135,6 +135,7 @@ div#foot_ {
   }
   #messagePanel {
     width: 100vw;
+    height: 100vh;
     font-size: 5vw;
   }
   #topHeading {
@@ -146,7 +147,11 @@ div#foot_ {
     font-size: 0.7rem;
   }
 
+  #msg-text-other{
+    max-width: 80vw;
+  }
   .msg-text-client {
-    max-width: 35vw;
+    max-width: 80vw;
+
   }
 }

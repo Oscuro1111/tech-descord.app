@@ -6,7 +6,6 @@ const state = {
 };
 
 module.exports = () => {
-
   const Server = function (socket) {
     Object.defineProperty(this, "socket", {
       writable: false,
@@ -15,8 +14,7 @@ module.exports = () => {
       value: socket,
     });
 
-
-    this.guestNumber=0;
+    this.guestNumber = 0;
   };
   Server.prototype = new Object();
 
@@ -25,12 +23,10 @@ module.exports = () => {
   };
 
   Server.prototype.install = function () {
-
     let chat_server = this.getSocket();
-    
-    chat_server.on("connection", (socket) => {
 
-      state.users[socket.id]={ id: socket.id, user_sock: socket };
+    chat_server.on("connection", (socket) => {
+      state.users[socket.id] = { id: socket.id, user_sock: socket };
 
       state.activeUsers++;
 
@@ -54,7 +50,6 @@ module.exports = () => {
   };
 
   Server.prototype.handleClient = function (client_socket) {
-    
     this.guestNumber = this.assignGuestNumber(client_socket);
 
     // this.joinRoom("lobby", client_socket);
@@ -80,25 +75,18 @@ module.exports = () => {
       userName: name,
     });
 
-    this.getSocket().emit("_sys_brodcast",{
-      msg:"SYSTEM>> "+name+" is joined the room!"
+    this.getSocket().emit("_sys_brodcast", {
+      msg: "SYSTEM>> " + name + " is joined the room!",
     });
     state.room[sock.id] = "Default";
 
     return this.guestNumber + 1;
-
   };
 
   Server.prototype.handleMessageBroadcast = function (sock) {
-
-    var io  = this.getSocket();
+    var io = this.getSocket();
     sock.on("message", (msg) => {
-
-      console.log("Messaged");
-      console.log(state.users[sock.id].room);
-
-      console.log(io);
-    io.emit("_msg_", {
+      io.emit("_msg_", {
         data: msg.data,
       });
     });
