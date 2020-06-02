@@ -56,7 +56,7 @@ module.exports = () => {
 
     this.handleMessageBroadcast(client_socket);
 
-    // this.handleNameChangeAttempts(client_socket);
+    this.handleNameChangeAttempts(client_socket);
 
     //this.handleRoomJoining(client_socket);
   };
@@ -89,6 +89,18 @@ module.exports = () => {
       io.emit("_msg_", {
         data: msg.data,
       });
+    });
+  };
+
+  Server.prototype.handleNameChangeAttempts = function (sock) {
+
+    sock.on("nameChange", (data) => {
+
+      this.getSocket().emit("_sys_brodcast",{
+        msg:state.users[sock.id][sock.id]+"Changed name to"+data.name,
+      });
+      state.users[sock.id][sock.id] = data.name;
+      sock.emit("nameResult", { userName: data.name, success: true });
     });
   };
 

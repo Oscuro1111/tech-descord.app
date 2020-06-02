@@ -104,8 +104,11 @@ Main.prototype.install = function () {
 
   btn.addEventListener("click", (e) => {
     setTimeout((_) => {
-      if (/^\//g.test(input_box.value)) {
-        alert("Command not message");
+      if (/^\/name/g.test(input_box.value)) {
+        
+        let name  = new String(input_box.value);        
+        
+         this.getSocket().emit("nameChange",{name:name.split(" ").pop()});
         return;
       }
 
@@ -116,7 +119,7 @@ Main.prototype.install = function () {
         msg.setAttribute("class", "msg-text-client");
 
         msg.append(
-          document.createTextNode(`<Me:${this.clientName}>` + input_box.value)
+          document.createTextNode(`[${this.clientName}]::` + input_box.value)
         );
 
         let prom = new Promise((resolve, reject) => {
