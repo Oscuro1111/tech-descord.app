@@ -14,8 +14,8 @@ body {
   word-wrap: break-word;
   background-color: rgb(7, 35, 88);
   color: white;
-  font-family: cursive;
-  font-weight: 200;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 600;
   padding: 0.7rem;
   max-width: 10vw;
   margin: 1rem 1rem 1rem 0;
@@ -33,8 +33,8 @@ body {
   word-wrap: break-word;
   background-color: rgb(2, 2, 2);
   color: white;
-  font-family: cursive;
-  font-weight: 200;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 600;
   padding: 0.7rem;
   max-width: 10vw;
   margin: 1rem 1rem 1rem 0;
@@ -44,7 +44,7 @@ body {
   border-color: teal;
   background-repeat: no-repeat;
   min-height: 70vh;
-  opacity: 0.8;
+  opacity: 0.9;
   max-height: 70vh;
   width: 60vw;
   scroll-behavior: smooth;
