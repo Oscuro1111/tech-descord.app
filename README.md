@@ -15,7 +15,7 @@ open terminal
 
 run commands:
 
-git clone <link>
+git clone https://github.com/Oscuro1111/tech-descord.app.git
 
 cd tech-descord.app
 
