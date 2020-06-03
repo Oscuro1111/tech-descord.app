@@ -6,7 +6,7 @@ const state = {
 };
 
 module.exports = () => {
-  const Server = function (socket) {
+  const Server = function (socket, io) {
     Object.defineProperty(this, "socket", {
       writable: false,
       enumerable: false,
@@ -14,12 +14,22 @@ module.exports = () => {
       value: socket,
     });
 
+    Object.defineProperty(this, "IO", {
+      writable: false,
+      enumerable: false,
+      configurable: false,
+      value: io,
+    });
     this.guestNumber = 0;
   };
   Server.prototype = new Object();
 
   Server.prototype.getSocket = function () {
     return this.socket;
+  };
+
+  Server.prototype.getIO = function () {
+    return this.IO;
   };
 
   Server.prototype.install = function () {
@@ -44,8 +54,9 @@ module.exports = () => {
           online: num,
         });
 
-        chat_server.emit("_sys_brodcast",{
-          msg:"system>>"+state.users[socket.id][socket.id]+" Left the room",
+        chat_server.emit("_sys_brodcast", {
+          msg:
+            "system>>" + state.users[socket.id][socket.id] + " Left the room",
         });
       });
 
@@ -56,13 +67,13 @@ module.exports = () => {
   Server.prototype.handleClient = function (client_socket) {
     this.guestNumber = this.assignGuestNumber(client_socket);
 
-    // this.joinRoom("lobby", client_socket);
+    //this.joinRoom("lobby", client_socket);
 
     this.handleMessageBroadcast(client_socket);
 
     this.handleNameChangeAttempts(client_socket);
 
-    //this.handleRoomJoining(client_socket);
+    this.handleRoomJoining(client_socket);
   };
   Server.prototype.assignGuestNumber = function (sock) {
     var name = "Guest" + this.guestNumber;
@@ -82,7 +93,6 @@ module.exports = () => {
     this.getSocket().emit("_sys_brodcast", {
       msg: "SYSTEM>> " + name + " is joined the room!",
     });
-    state.room[sock.id] = "Default";
 
     return this.guestNumber + 1;
   };
@@ -90,21 +100,51 @@ module.exports = () => {
   Server.prototype.handleMessageBroadcast = function (sock) {
     var io = this.getSocket();
     sock.on("message", (msg) => {
-      io.emit("_msg_", {
+      io.in(state.users[sock.id]["room"]).emit("_msg_", {
         data: msg.data,
       });
     });
   };
 
   Server.prototype.handleNameChangeAttempts = function (sock) {
-
     sock.on("nameChange", (data) => {
-
-      this.getSocket().emit("_sys_brodcast",{
-        msg:state.users[sock.id][sock.id]+"Changed name to"+data.name,
+      this.getSocket().emit("_sys_brodcast", {
+        msg: state.users[sock.id][sock.id] + " changed name to" + data.name,
       });
+
       state.users[sock.id][sock.id] = data.name;
       sock.emit("nameResult", { userName: data.name, success: true });
+    });
+  };
+
+  //curently working
+  Server.prototype.handleRoomJoining = function (sock) {
+    const io = this.getSocket();
+
+    var prevRoom;
+
+    sock.on("roomChange", (data) => {
+      (this.temp = state.users[sock.id]),
+        ((prevRoom = this.temp["room"]),
+        sock.leave(this.temp["room"]),
+        (this.temp["room"] = data.name)),
+        (state.users[sock.id] = this.temp);
+
+      sock.join(data.name);
+      if (prevRoom) {
+        io.in(prevRoom).emit("_sys_brodcast", {
+          msg: `${state.users[sock.id][sock.id]} left the room.`,
+        });
+      }
+
+      io.in(data.name).emit("roomChanged", {
+        name: data.name,
+        user: state.users[sock.id][sock.id],
+      });
+
+      io.in(data.name).emit("_sys_brodcast", {
+        msg: `${state.users[sock.id][sock.id]} joined the room ${data.name}.`,
+      });
     });
   };
 
