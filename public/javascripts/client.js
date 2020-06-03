@@ -34,6 +34,18 @@ Main.prototype.handleClient = function (msgPanel, activeNum) {
 
   const sock = this.getSocket();
 
+  sock.on("roomChanged", (data) => {
+
+    while(msgPanel.length>0){
+      msgPanel.pop();
+    }
+
+    let room_Name = document.getElementById("room_Name");
+
+    room_Name.innerText = `current Room::[${data.name}]`;
+
+  });
+
   sock.on("_msg_", (msg_) => {
     if (this.flg) {
       this.flg = false;
@@ -95,20 +107,31 @@ Main.prototype.install = function () {
 
   const activeNum = document.getElementById("active_users");
 
-  console.log("CHECKING:", activeNum);
+  /*
+
   const Msgs = [];
 
   msgPanel.addEventListener("scroll", () => {
     if (Msgs.length > 0) msgPanel.prepend(Msgs.pop());
   });
+  */
 
   btn.addEventListener("click", (e) => {
     setTimeout((_) => {
       if (/^\/name/g.test(input_box.value)) {
-        
-        let name  = new String(input_box.value);        
-        
-         this.getSocket().emit("nameChange",{name:name.split(" ").pop()});
+        let name = new String(input_box.value);
+
+        this.getSocket().emit("nameChange", { name: name.split(" ").pop() });
+        return;
+      }
+
+      if (/^\/room/g.test(input_box.value)) {
+        let room = new String(input_box.value);
+
+        this.getSocket().emit("roomChange", {
+          name: room.split(" ").pop(),
+        });
+
         return;
       }
 
