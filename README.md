@@ -15,11 +15,8 @@ open terminal
 
 run commands:
 
-git clone https://github.com/Oscuro1111/tech-descord.app.git
-
-cd tech-descord.app
-
-//Download dependices
-npm install
-
-npm start (for run this app)
+1)git clone https://github.com/Oscuro1111/tech-descord.app.git
+2)cd tech-descord.app
+3)npm install
+4)npm start (for run this app)
+-------------------------------
