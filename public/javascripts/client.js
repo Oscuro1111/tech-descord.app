@@ -35,15 +35,13 @@ Main.prototype.handleClient = function (msgPanel, activeNum) {
   const sock = this.getSocket();
 
   sock.on("roomChanged", (data) => {
-
-    while(msgPanel.length>0){
+    while (msgPanel.length > 0) {
       msgPanel.pop();
     }
 
     let room_Name = document.getElementById("room_Name");
 
     room_Name.innerText = `current Room::[${data.name}]`;
-
   });
 
   sock.on("_msg_", (msg_) => {
@@ -136,11 +134,12 @@ Main.prototype.install = function () {
       }
 
       if (/[A-Za-z-0-9]/g.test(input_box.value)) {
+        
         btn.disabled = true;
+
         var msg = document.createElement("div");
-
+        
         msg.setAttribute("class", "msg-text-client");
-
         msg.append(
           document.createTextNode(`[${this.clientName}]::` + input_box.value)
         );

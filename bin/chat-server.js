@@ -20,6 +20,7 @@ module.exports = () => {
       configurable: false,
       value: io,
     });
+    
     this.guestNumber = 0;
   };
   Server.prototype = new Object();
